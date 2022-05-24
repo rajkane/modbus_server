@@ -14,8 +14,9 @@ class MainWindow(qtw.QMainWindow, Ui_MainWindow):
         self.show()
 
     def reg_ip_validator(self):
-        ip_range = "(?:[0-9]{1,3}\.){3}[0-9]{1,3}"
-        ip_regex = qtc.QRegExp(f"^{ip_range}$")
+        ip_range = "^(([1-9][0-9]?|1[0-9]{2}|2[0-4][0-9]|25[0-4])\.([0-9][0-9]?|1[0-9]{2}|2[0-4][0-9]|25[0-4])\." \
+                   "([0-9][0-9]?|1[0-9]{2}|2[0-4][0-9]|25[0-4])\.([0-9][0-9]?|1[0-9]{2}|2[0-4][0-9]|25[0-4])$)"
+        ip_regex = qtc.QRegExp(ip_range)
         ip_validator = qtg.QRegExpValidator(ip_regex)
         self.le_ip.setValidator(ip_validator)
 
