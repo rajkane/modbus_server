@@ -8,21 +8,22 @@ class MainWindow(qtw.QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.setWindowFlags(qtc.Qt.WindowCloseButtonHint | qtc.Qt.WindowMinimizeButtonHint)
         self.reg_ip_validator()
+        self.reg_port_validator()
         self.btn_start.clicked.connect(self.start_server)
         self.btn_stop.clicked.connect(self.stop_server)
         self.show()
 
     def reg_ip_validator(self):
-        ip_range = "(([ 0]+)|([ 0]*[0-9] *)|([0-9][0-9] )|([ 0][0-9][0-9])|(1[0-9][0-9])|([2][0-4][0-9])|(25[0-5]))"
-        ip_regex = qtc.QRegExp("^" + ip_range
-                               + "\\." + ip_range
-                               + "\\." + ip_range
-                               + "\\." + ip_range + "$")
+        ip_range = "(?:[0-9]{1,3}\.){3}[0-9]{1,3}"
+        ip_regex = qtc.QRegExp(f"^{ip_range}$")
         ip_validator = qtg.QRegExpValidator(ip_regex)
         self.le_ip.setValidator(ip_validator)
-        # self.le_ip.setInputMask("000.000.000.000;_")
-        # self.le_ip.setCursorPosition(0)
-        print(self.le_ip.text())
+
+    def reg_port_validator(self):
+        port_range = "^[1-9][0-9]{4}"
+        port_regex = qtc.QRegExp(f"{port_range}")
+        port_validator = qtg.QRegExpValidator(port_regex)
+        self.le_port.setValidator(port_validator)
 
     def start_server(self):
         self.lw_notification.addItem("Start server")
