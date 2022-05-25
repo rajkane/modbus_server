@@ -29,12 +29,16 @@ class MainWindow(qtw.QMainWindow, Ui_MainWindow):
         self.modbus_server = ServerWorker(ip=ip, port=port)
         self.modbus_server.start()
         self.modbus_server.enable_process.connect(self.enable_disable_objects)
+        self.modbus_server.state.connect(self.state_process)
         self.modbus_server.notification.connect(self.message_notification)
         self.modbus_server.status.connect(self.message_status_bar)
 
     def stop_server(self):
         self.enable_disable_objects(False)
         self.modbus_server.stop()
+
+    def state_process(self, val):
+        self.statusbar.showMessage(str(val))
 
     def message_notification(self, msg):
         self.lw_notification.addItem(msg)
