@@ -8,6 +8,7 @@ from random import uniform
 
 class ServerWorker(qtc.QThread):
     enable_process = qtc.pyqtSignal(bool)
+    state = qtc.pyqtSignal(list)
     notification = qtc.pyqtSignal(str)
     status = qtc.pyqtSignal(str)
 
@@ -35,7 +36,6 @@ class ServerWorker(qtc.QThread):
                         state = DataBank.get_words(1)
                         self.notification.emit(f"Value of register 1 has changed to {str(state)}")
                     sleep(1)
-                    state = DataBank.get_words(1)
                     self.status.emit("Server in process")
             else:
                 self.stop()
