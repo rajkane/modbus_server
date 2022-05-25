@@ -5,7 +5,7 @@ from pyModbusTCP.client import ModbusClient
 
 
 # init modbus client
-c = ModbusClient(host="10.50.1.17", port=19600, debug=False, auto_open=True)
+c = ModbusClient(host="10.50.1.17", port=3505, debug=False, auto_open=True)
 
 # main read loop
 while True:
