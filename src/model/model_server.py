@@ -35,6 +35,7 @@ class ServerWorker(qtc.QThread):
                         state = DataBank.get_words(1)
                         self.notification.emit(f"Value of register 1 has changed to {str(state)}")
                     sleep(1)
+                    state = DataBank.get_words(1)
                     self.status.emit("Server in process")
             else:
                 self.stop()
