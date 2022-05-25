@@ -32,35 +32,6 @@
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="0" column="0">
      <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0">
-       <widget class="QLineEdit" name="le_ip">
-        <property name="statusTip">
-         <string>Enter IP address</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-        <property name="placeholderText">
-         <string>Enter IP address</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLineEdit" name="le_port">
-        <property name="statusTip">
-         <string>Enter port</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-        <property name="placeholderText">
-         <string>Enter port</string>
-        </property>
-       </widget>
-      </item>
       <item row="2" column="0">
        <widget class="QListWidget" name="lw_notification">
         <property name="statusTip">
@@ -77,6 +48,38 @@
         </property>
         <property name="isWrapping" stdset="0">
          <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLineEdit" name="le_ip">
+        <property name="statusTip">
+         <string>Enter IP address</string>
+        </property>
+        <property name="text">
+         <string>127.0.0.1</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+        <property name="placeholderText">
+         <string>Enter IP address</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QSpinBox" name="sb_port">
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+        <property name="accelerated">
+         <bool>true</bool>
+        </property>
+        <property name="minimum">
+         <number>3505</number>
+        </property>
+        <property name="maximum">
+         <number>19600</number>
         </property>
        </widget>
       </item>

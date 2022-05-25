@@ -22,19 +22,23 @@ class ServerWorker(qtc.QThread):
         self.thread_active = True
         self.enable_process.emit(True)
         try:
-            self.server = ModbusServer(self.ip, self.port, no_block=True)
-            self.notification.emit(f"{datetime.datetime.now()} Start server ...")
-            self.status.emit(f"{datetime.datetime.now()} Start server ...")
-            self.server.start()
-            self.notification.emit("Server is online")
-            state = [0]
-            while self.thread_active:
-                DataBank.set_words(0, [int(uniform(0, 100))])
-                if state != DataBank.get_words(1):
-                    state = DataBank.get_words(1)
-                    self.notification.emit(f"Value of register 1 has changed to {str(state)}")
-                sleep(1)
-                self.status.emit("Server in process")
+            if self.ip != "":
+                self.server = ModbusServer(self.ip, self.port, no_block=True)
+                self.notification.emit(f"{datetime.datetime.now()} Start server ...")
+                self.status.emit(f"{datetime.datetime.now()} Start server ...")
+                self.server.start()
+                self.notification.emit("Server is online")
+                state = [0]
+                while self.thread_active:
+                    DataBank.set_words(0, [int(uniform(0, 100))])
+                    if state != DataBank.get_words(1):
+                        state = DataBank.get_words(1)
+                        self.notification.emit(f"Value of register 1 has changed to {str(state)}")
+                    sleep(1)
+                    self.status.emit("Server in process")
+            else:
+                self.stop()
+                self.notification.emit("Enter ip address!")
         except ConnectionError as ce:
             self.notification.emit("Shutdown server ...")
             self.server.stop()
