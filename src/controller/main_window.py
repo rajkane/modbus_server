@@ -26,19 +26,17 @@ class MainWindow(qtw.QMainWindow, Ui_MainWindow):
     def start_server(self):
         ip = self.le_ip.text()
         port = self.sb_port.value()
-        self.modbus_server = ServerWorker(ip=ip, port=port)
-        self.modbus_server.start()
-        self.modbus_server.enable_process.connect(self.enable_disable_objects)
-        self.modbus_server.state.connect(self.state_process)
-        self.modbus_server.notification.connect(self.message_notification)
-        self.modbus_server.status.connect(self.message_status_bar)
+        if len(ip) <= 7 or ip[-1:] == ".":
+            self.message_notification("Check your IP address!")
+        else:
+            self.modbus_server = ServerWorker(ip=ip, port=port)
+            self.modbus_server.start()
+            self.modbus_server.enable_process.connect(self.enable_disable_objects)
+            self.modbus_server.notification.connect(self.message_notification)
+            self.modbus_server.status.connect(self.message_status_bar)
 
     def stop_server(self):
-        self.enable_disable_objects(False)
         self.modbus_server.stop()
-
-    def state_process(self, val):
-        self.statusbar.showMessage(str(val))
 
     def message_notification(self, msg):
         self.lw_notification.addItem(msg)
@@ -59,7 +57,9 @@ class MainWindow(qtw.QMainWindow, Ui_MainWindow):
             self.btn_stop.setEnabled(False)
 
     def closeEvent(self, e):
-        if self.modbus_server.isRunning():
-            self.modbus_server.stop()
-            self.modbus_server.wait()
-        e.accept()
+        if isinstance(self.modbus_server, ServerWorker):
+            if self.modbus_server.isRunning():
+                self.modbus_server.stop()
+            e.accept()
+        else:
+            e.accept()
