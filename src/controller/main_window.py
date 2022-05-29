@@ -1,4 +1,3 @@
-
 from src import *
 from src.view.ui_main_window import Ui_MainWindow
 from src.model.model_server import ServerWorker
