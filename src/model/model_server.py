@@ -1,4 +1,3 @@
-
 from src import *
 import datetime
 
@@ -31,6 +30,7 @@ class ServerWorker(qtc.QThread):
                 while self.thread_active:
                     if not self.thread_active:
                         break
+                    sleep(1)
                     self.status.emit("Server in process")
             except ConnectionError as ce:
                 self.notification.emit(f"{str(ce)}")
