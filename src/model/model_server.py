@@ -1,8 +1,11 @@
 from src import *
 import datetime
-
 from pyModbusTCP.server import ModbusServer
 from time import sleep
+import logging
+
+logging.basicConfig(filename="server.log", level=logging.DEBUG)
+NOW = datetime.datetime.now().strftime('%Y/%m/%d - %H:%M:%S')
 
 
 class ServerWorker(qtc.QThread):
@@ -25,8 +28,9 @@ class ServerWorker(qtc.QThread):
             try:
                 self.server = ModbusServer(self.ip, self.port, no_block=True)
                 self.server.start()
-                self.notification.emit("Start server ...")
-                self.notification.emit(f"{datetime.datetime.now().strftime('%Y/%m/%d - %H:%M:%S')}\tServer is online")
+                self.notification.emit(f"{NOW}\tStart server ...")
+                self.notification.emit(f"{NOW}\tServer is online")
+                logging.info(f"{NOW}\tServer is online")
                 while self.thread_active:
                     if not self.thread_active:
                         break
@@ -34,15 +38,19 @@ class ServerWorker(qtc.QThread):
                     self.status.emit("Server in process")
             except ConnectionError as ce:
                 self.notification.emit(f"{str(ce)}")
+                logging.warning(f"{NOW}\t{str(ce)}")
                 self.stop()
             except OSError as oe:
                 self.notification.emit(f"{str(oe)}")
+                logging.warning(f"{NOW}\t{str(oe)}")
                 self.stop()
 
     def stop(self):
-        self.notification.emit("Shutdown server ...")
+        self.notification.emit(f"Shutdown server ...")
+        logging.info(f"{NOW}\tShutdown server ...")
         self.server.stop()
-        self.notification.emit(f"{datetime.datetime.now().strftime('%Y/%m/%d - %H:%M:%S')}\tServer is offline")
+        self.notification.emit(f"{NOW}\tServer is offline")
+        logging.info(f"{NOW}\tServer is offline")
         self.thread_active = False
         self.enable_process.emit(False)
         self.quit()
