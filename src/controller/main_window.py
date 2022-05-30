@@ -39,6 +39,7 @@ class MainWindow(qtw.QMainWindow, Ui_MainWindow):
 
     def message_notification(self, msg):
         self.lw_notification.addItem(msg)
+        self.lw_notification.scrollToBottom()
 
     def message_status_bar(self, msg):
         self.statusbar.showMessage(msg)
@@ -49,11 +50,24 @@ class MainWindow(qtw.QMainWindow, Ui_MainWindow):
             self.sb_port.setEnabled(False)
             self.btn_start.setEnabled(False)
             self.btn_stop.setEnabled(True)
+
         else:
             self.le_ip.setEnabled(True)
             self.sb_port.setEnabled(True)
             self.btn_start.setEnabled(True)
             self.btn_stop.setEnabled(False)
+
+    def keyPressEvent(self, e):
+        if e.key() == qtc.Qt.Key_Enter or e.key() == qtc.Qt.Key_Return:
+            if not isinstance(self.modbus_server, ServerWorker):
+                self.start_server()
+            else:
+                if self.modbus_server.isFinished():
+                    self.start_server()
+        elif e.key() == qtc.Qt.Key_Escape:
+            if isinstance(self.modbus_server, ServerWorker):
+                if self.modbus_server.isRunning():
+                    self.stop_server()
 
     def closeEvent(self, e):
         if isinstance(self.modbus_server, ServerWorker):
